@@ -1,38 +1,32 @@
 import cv2 as cv
 import numpy as np
 import sys
-from PyQt5.QtWidgets import * #QMainWindow, QLabel, QPushButton
+from PyQt5 import uic
+from PyQt5.QtWidgets import * #QMainWindow, QLabel, QPushButton, QApplication, QMainWindow 
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 
 
-class WindowClass(QMainWindow):
-    
+form_class = uic.loadUiType("./test.ui")[0]
+
+class WindowClass(QMainWindow, form_class):
     def __init__(self):
         super().__init__()
-        self.setupUI()
+        self.setupUi(self)
+        self.setWindowTitle('x-ray detection program')
         
-    def setupUI(self):
-        # 윈도우 설정
-        self.setGeometry(300, 300, 400, 300)
-        self.setWindowTitle('농산물')
+        # 열기 버튼 클릭 이벤트
+        self.openBtn.clicked.connect(self.fileOpenFunction)
         
-        # 파일 버튼 생성
-        self.fileButton = QPushButton('파일', self)
-        self.fileButton.setGeometry(10, 10, 100, 30)
-        self.fileButton.clicked.connect(self.fileOpenFunction)
-        
-        # 검출 버튼 생성
-        self.detectButton = QPushButton('검출', self)
-        self.detectButton.setGeometry(120, 10, 100, 30)
-        self.detectButton.clicked.connect(self.detectFunction) # detectFunction 대신 실제 구현
+        # 검출 버튼 클릭 이벤트
+        #self.detectBtn.clicked.connect(self.btnClick)
         
         # 이미지를 추가할 라벨
         self.imageLabel = QLabel(self)
         
         # 이미지 개수(* 변수명 변경하기)
         self.step = 0
-        
+
     def fileOpenFunction(self):
         global fname
         fname = QFileDialog.getOpenFileNames(self, './')
@@ -48,12 +42,8 @@ class WindowClass(QMainWindow):
         
         # 이미지의 크기에 맞게 윈도우 resize
         self.resize(pixmap.width(), pixmap.height())
-    
-    # 실제 구현
-    def detectFunction(self):
-        a = 0
         
-    
+        
     def keyPressEvent(self, e):
         if e.key() == Qt.Key_A and self.step != 0:
             self.step -= 1
