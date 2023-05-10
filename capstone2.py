@@ -17,7 +17,7 @@ class WindowClass(QMainWindow, form_class):
         
         # 열기 버튼 클릭 이벤트
         self.openBtn.clicked.connect(self.fileOpenFunction)
-        
+                
         # 검출 버튼 클릭 이벤트
         #self.detectBtn.clicked.connect(self.btnClick)
         
@@ -36,8 +36,9 @@ class WindowClass(QMainWindow, form_class):
         
         # 이미지 설정
         pixmap = QPixmap(fname[0][0])
+        pixmap = pixmap.scaled(512, 400, Qt.KeepAspectRatio)
         self.imageLabel.setPixmap(pixmap)
-        self.imageLabel.setContentsMargins(10, 50, 10, 10)
+        self.imageLabel.setContentsMargins(10, 55, 10, 10)
         self.imageLabel.resize(pixmap.width(), pixmap.height())
         
         # 이미지의 크기에 맞게 윈도우 resize

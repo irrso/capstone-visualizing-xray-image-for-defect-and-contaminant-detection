@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>714</width>
+    <height>382</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -50,25 +50,41 @@
       <verstretch>0</verstretch>
      </sizepolicy>
     </property>
+    <property name="font">
+     <font>
+      <family>나눔스퀘어라운드 Bold</family>
+      <pointsize>8</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="mouseTracking">
      <bool>true</bool>
     </property>
     <property name="styleSheet">
-     <string notr="true">background:transparent</string>
+     <string notr="true">QPushButton{
+	color: rgb(123, 122, 122);
+	background-color: rgb(243, 243, 243);
+	border: 1px solid rgb(123, 122, 122);
+	border-radius: 9px;
+}
+
+QPushButton:hover{
+	color: rgb(86, 98, 112);
+	background-color: rgb(243, 243, 243);
+	border: 1px solid rgb(86, 98, 112);
+	border-radius: 9px;
+}
+
+QPushButton:pressed{
+	color: rgb(243, 243, 243);
+	background-color: rgb(86, 98, 112);
+	border: 1px solid rgb(243, 243, 243);
+	border-radius: 9px;
+}</string>
     </property>
     <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>detect_btn.png</normaloff>
-      <normalon>clicked_detect_btn.png</normalon>
-      <disabledoff>detect_btn.png</disabledoff>
-      <disabledon>clicked_detect_btn.png</disabledon>
-      <activeoff>detect_btn.png</activeoff>
-      <activeon>clicked_detect_btn.png</activeon>
-      <selectedoff>detect_btn.png</selectedoff>
-      <selectedon>clicked_detect_btn.png</selectedon>detect_btn.png</iconset>
+     <string>detect</string>
     </property>
     <property name="iconSize">
      <size>
@@ -95,6 +111,14 @@
       <verstretch>0</verstretch>
      </sizepolicy>
     </property>
+    <property name="font">
+     <font>
+      <family>나눔스퀘어라운드 Bold</family>
+      <pointsize>8</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="layoutDirection">
      <enum>Qt::LeftToRight</enum>
     </property>
@@ -102,21 +126,29 @@
      <bool>false</bool>
     </property>
     <property name="styleSheet">
-     <string notr="true">background:transparent</string>
+     <string notr="true">QPushButton{
+	color: rgb(123, 122, 122);
+	background-color: rgb(243, 243, 243);
+	border: 1.3px solid rgb(123, 122, 122);
+	border-radius: 9px;
+}
+
+QPushButton:hover{
+	color: rgb(86, 98, 112);
+	background-color: rgb(243, 243, 243);
+	border: 1.3px solid rgb(86, 98, 112);
+	border-radius: 9px;
+}
+
+QPushButton:pressed{
+	color: rgb(243, 243, 243);
+	background-color: rgb(86, 98, 112);
+	border: 1.3px solid rgb(243, 243, 243);
+	border-radius: 9px;
+}</string>
     </property>
     <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>open_btn.png</normaloff>
-      <normalon>clicked_open_btn.png</normalon>
-      <disabledoff>open_btn.png</disabledoff>
-      <disabledon>clicked_open_btn.png</disabledon>
-      <activeoff>open_btn.png</activeoff>
-      <activeon>clicked_open_btn.png</activeon>
-      <selectedoff>open_btn.png</selectedoff>
-      <selectedon>clicked_open_btn.png</selectedon>open_btn.png</iconset>
+     <string>open</string>
     </property>
     <property name="iconSize">
      <size>
