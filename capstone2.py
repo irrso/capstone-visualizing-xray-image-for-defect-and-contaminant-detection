@@ -19,13 +19,11 @@ class WindowClass(QMainWindow, form_class):
         self.openBtn.clicked.connect(self.fileOpenFunction)
                 
         # 검출 버튼 클릭 이벤트
-        #self.detectBtn.clicked.connect(self.btnClick)
-        
-        # 이미지를 추가할 라벨
-        self.imageLabel = QLabel(self)
+        self.detectBtn.clicked.connect(self.detectFunction)
         
         # 이미지 개수(* 변수명 변경하기)
         self.step = 0
+
 
     def fileOpenFunction(self):
         global fname
@@ -35,15 +33,27 @@ class WindowClass(QMainWindow, form_class):
         if self.img is None: sys.exit('파일을 찾을 수 없습니다')
         
         # 이미지 설정
-        pixmap = QPixmap(fname[0][0])
-        pixmap = pixmap.scaled(512, 400, Qt.KeepAspectRatio)
-        self.imageLabel.setPixmap(pixmap)
-        self.imageLabel.setContentsMargins(10, 55, 10, 10)
-        self.imageLabel.resize(pixmap.width(), pixmap.height())
+        pixmap = QPixmap(fname[0][0]).scaled(512, 400, Qt.KeepAspectRatio)
+        self.beforeLabel.setPixmap(pixmap)
+        self.beforeLabel.resize(pixmap.width(), pixmap.height())
         
-        # 이미지의 크기에 맞게 윈도우 resize
-        self.resize(pixmap.width(), pixmap.height())
+        # 이미지 하단에 텍스트 설정
+        self.btextLabel.setText(str(self.step+1)+"/"+str(len(fname[0])))
         
+        
+    # 수정하기
+    def detectFunction(self):
+        global fname1
+        fname1 = QFileDialog.getOpenFileNames(self, './')
+         
+        self.img1 = cv.imread(fname1[0][0])
+        if self.img1 is None: sys.exit('파일을 찾을 수 없습니다')
+         
+        # 이미지 설정
+        pixmap1 = QPixmap(fname1[0][0]).scaled(512, 400, Qt.KeepAspectRatio)
+        self.afterLabel.setPixmap(pixmap1)
+        self.afterLabel.resize(pixmap1.width(), pixmap1.height())
+         
         
     def keyPressEvent(self, e):
         if e.key() == Qt.Key_A and self.step != 0:
@@ -52,8 +62,9 @@ class WindowClass(QMainWindow, form_class):
         elif e.key() == Qt.Key_D and self.step != len(fname[0])-1:
             self.step += 1
         
-        pixmap = QPixmap(fname[0][self.step])
-        self.imageLabel.setPixmap(pixmap)
+        pixmap = QPixmap(fname[0][self.step]).scaled(512, 400, Qt.KeepAspectRatio)
+        self.beforeLabel.setPixmap(pixmap)
+        self.btextLabel.setText(str(self.step+1)+"/"+str(len(fname[0])))
 
 
 if __name__ == '__main__':
