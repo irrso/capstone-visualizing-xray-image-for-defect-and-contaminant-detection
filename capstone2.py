@@ -22,12 +22,15 @@ class WindowClass(QMainWindow, form_class):
                 
         # 검출 버튼 클릭 이벤트
         self.detectBtn.clicked.connect(self.detectFunction)
-        
-        # 이미지 개수(* 변수명 변경하기)
-        self.step = 0
 
 
     def fileOpenFunction(self):
+        # 이미지 개수, pixmap1 초기화
+        self.step = 0
+        self.atextLabel.setText(' ')
+        pixmap1 = QPixmap()
+        self.afterLabel.setPixmap(pixmap1)
+        
         global fname
         fname = QFileDialog.getOpenFileNames(self, './')
         
@@ -78,7 +81,7 @@ class WindowClass(QMainWindow, form_class):
         self.atextLabel.setText(str(self.step+1)+"/"+str(len(fname[0])))
         
         
-def pseudo(img, flag=156):
+def pseudo(img, flag=0.0):
     height, width = img.shape
     s = np.zeros((height, width)).astype('float')
 
@@ -93,41 +96,44 @@ def pseudo(img, flag=156):
         for j in range(1, width+1):
             ps[i, j] = ps[i-1][j] + ps[i][j-1] - ps[i-1][j-1] + img[i-1, j-1]
             pss[i, j] = pss[i-1][j] + pss[i][j-1] - pss[i-1][j-1] + np.int64(img[i-1, j-1])*img[i-1, j-1]
-    
+        
     # RD 이미지 생성
     for r in range(20, height - 20):
         for c in range(20, width - 20):
             i = r + 1;
             j = c + 1;
             # 한 픽셀에 대해 주변 40*40 범위의 평균과 표준편차를 구해 주변보다 밀도가 얼마나 차이나는지 구함
-            if img[r, c] < flag: # 40000
-                wam = (ps[i + scale][j + scale] - ps[i - scale-1][j + scale] - ps[i + scale][j - scale-1] + ps[i - scale-1][j - scale-1]) / (41 * 41)
-                lam = (ps[i+2][j+2] - ps[i-2-1][j+2] - ps[i+2][j-2-1] + ps[i-2-1][j-2-1]) / (5 * 5)
-                
-                sq_sum = pss[i + scale][j + scale] - pss[i - scale-1][j + scale] - pss[i + scale][j - scale-1] + pss[i - scale-1][j - scale-1]
-                sq_sum_avg = sq_sum / (41 * 41)
-                std = math.sqrt(sq_sum_avg - wam*wam)
+            try:
+                if img[r, c] < 200:
+                    wam = (ps[i + scale][j + scale] - ps[i - scale-1][j + scale] - ps[i + scale][j - scale-1] + ps[i - scale-1][j - scale-1]) / (41 * 41)
+                    lam = (ps[i+2][j+2] - ps[i-2-1][j+2] - ps[i+2][j-2-1] + ps[i-2-1][j-2-1]) / (5 * 5)
+                    
+                    sq_sum = pss[i + scale][j + scale] - pss[i - scale-1][j + scale] - pss[i + scale][j - scale-1] + pss[i - scale-1][j - scale-1]
+                    sq_sum_avg = sq_sum / (41 * 41)
+                    std = math.sqrt(sq_sum_avg - wam*wam)
 
-                z = round((lam - wam) / std, 2)
-                s[r, c] = z
+                    z = round((lam - wam) / std, 2)
+                    s[r, c] = z
+                    
+                    if 0 < z < flag:
+                        z *= -1.0
         
-                if 0 < z <= 1.5:
-                    z *= -1.0
-    
-                if z > 0:  # Red
-                    v = max(0, 255 - int(alpha * z))
-                    output[r, c, 0] = 255  # R
-                    output[r, c, 1] = v  # G
-                    output[r, c, 2] = v  # B
-                else:
-                    v = max(0, 255 + int(alpha * z))
-                    output[r, c, 0] = v  # R
-                    output[r, c, 1] = v  # G
-                    output[r, c, 2] = 255  # B
-    
+                    if z > 0:  # Red
+                        v = max(0, 255 - int(alpha * z))
+                        output[r, c, 0] = 255  # R
+                        output[r, c, 1] = v  # G
+                        output[r, c, 2] = v  # B
+                    else:
+                        v = max(0, 255 + int(alpha * z))
+                        output[r, c, 0] = v  # R
+                        output[r, c, 1] = v  # G
+                        output[r, c, 2] = 255  # B
+            except:
+                pass
+            
+    print('완료')       
     output = np.array(output, dtype=np.uint8)
-    print('완료')
-    return output    
+    return output
 
 
 if __name__ == '__main__':
